@@ -3,13 +3,13 @@ import robin_stocks as rs
 import pandas as pd
 # from tkinter import *
 import tkinter as tk
-from login import login1
-
-#change store session if you want to remember password
-rs.login(username='', password='', expiresIn=86400, by_sms=True, store_session = False)
 
 
-# rs.logout()
+# change store session if you want to remember password
+#rs.login(username='', password='', expiresIn=86400, by_sms=True, store_session=True)
+#rs.logout()
+
+
 
 def click_transactions():
     # Get Deposits and Withdrawals in Robinhood
@@ -81,12 +81,84 @@ def click_orders():
     label = tk.Label(tab_title, text=transaction_text)
     label.pack()
 
+def click_login():
+    # GUI to enter username and password
+    #root = tk.Tk()
+    window = tk.Toplevel(root)
+    # setting the windows size
+    window.geometry("600x400")
+
+    # declaring string variable
+    # for storing name and password
+    name_var = tk.StringVar()
+    passw_var = tk.StringVar()
+    # defining a function that will
+    # get the name and password and
+    # print them on the screen
+    def submit():
+        name = name_entry.get()
+        password = passw_var.get()
+
+        print("The name is : " + name)
+        print("The password is : " + password)
+        rs.login(username=name, password=password, expiresIn=86400, by_sms=True,
+                 store_session=True)
+        name_var.set("")
+        passw_var.set("")
+
+    # creating a label for
+    # name using widget Label
+    name_label = tk.Label(window, text='Username',
+                          font=('calibre',
+                                10, 'bold'))
+
+    # creating a entry for input
+    # name using widget Entry
+    name_entry = tk.Entry(window,
+                          textvariable=name_var, font=('calibre', 10, 'normal'))
+
+    # creating a label for password
+    passw_label = tk.Label(window,
+                           text='Password',
+                           font=('calibre', 10, 'bold'))
+
+    # creating a entry for password
+    passw_entry = tk.Entry(window,
+                           textvariable=passw_var,
+                           font=('calibre', 10, 'normal'),
+                           show='*')
+
+    # creating a button using the widget
+    # Button that will call the submit function
+    sub_btn = tk.Button(window, text='Submit',
+                        command=submit)
+
+    # placing the label and entry in
+    # the required position using grid
+    # method
+    name_label.grid(row=0, column=0)
+    name_entry.grid(row=0, column=1)
+    passw_label.grid(row=1, column=0)
+    passw_entry.grid(row=1, column=1)
+    sub_btn.grid(row=2, column=1)
+
+    # performing an infinite loop
+    # for the window to display
+    #root.mainloop()
+
+def click_logout():
+    rs.logout()
+
 
 # makes button for the two
 root = tk.Tk()
 root.title("Main Menu")
+btn0 = tk.Button(root, text="Login", command=click_login)
 btn1 = tk.Button(root, text="Get Your Transactions", command=click_transactions)
 btn2 = tk.Button(root, text="Get the number of orders you have ever placed", command=click_orders)
+#btn4 = tk.Button(root, text="Logout", command=click_logout())
+btn0.pack()
 btn1.pack()
 btn2.pack()
+#btn4.pack()
 root.mainloop()
