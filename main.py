@@ -1,6 +1,7 @@
 import robin_stocks as rs
 import tkinter as tk
 
+# This API was used: https://github.com/jmfernandes/robin_stocks
 
 # Debug; ignore these two lines
 # rs.login(username='', password='', expiresIn=86400, by_sms=True, store_session=True)
