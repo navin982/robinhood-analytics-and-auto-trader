@@ -4,7 +4,9 @@ import tkinter as tk
 # This API was used: https://github.com/jmfernandes/robin_stocks
 
 # Debug; ignore these two lines
-rs.login(username='', password='', expiresIn=86400, by_sms=True, store_session=True)
+#rs.login(username='', password='', expiresIn=86400, by_sms=True, store_session=True)
+
+
 #rs.logout()
 
 # This function creates a log in box where you can enter your credentials to use the actual program
@@ -61,7 +63,7 @@ def limit_order_crypto():
         quantity_v2 = float(quantity)
         print("symbol: " + symbol)
         print("quantity: " + quantity)
-        print("price: " + price)
+        print("Limit Price (max price you are willing to pay): " + price)
         rs.orders.order_buy_crypto_limit(symbol, quantity_v2, price_v2, timeInForce='gtc')
         symbol_var.set("")
         quantity_var.set("")
@@ -80,6 +82,53 @@ def limit_order_crypto():
     price_display = tk.Entry(window2, textvariable=price_var, font=('calibre', 10, 'normal'))
 
     submit_button = tk.Button(window2, text='Submit', command=submit2)
+
+    # Displays the actual parts on the GUI
+    symbol_gui.grid(row=0, column=0)
+    symbol_display.grid(row=0, column=1)
+    quant_gui.grid(row=1, column=0)
+    quant_display.grid(row=1, column=1)
+    price_gui.grid(row=2, column=0)
+    price_display.grid(row=2, column=1)
+    submit_button.grid(row=3, column=1)
+
+
+def limit_order_stock():
+    window3 = tk.Toplevel(root)
+
+    window3.geometry("500x350")
+
+    symbol_var = tk.StringVar()
+    quantity_var = tk.StringVar()
+    price_var = tk.StringVar()
+
+    def submit3():
+        quantity = quantity_var.get()
+        price = price_var.get()
+        symbol = symbol_var.get()
+        price_v2 = float(price)
+        quantity_v2 = float(quantity)
+        print("symbol: " + symbol)
+        print("quantity: " + quantity)
+        print("Limit Price (max price you are willing to pay): " + price)
+        rs.orders.order_buy_limit(symbol, quantity_v2, price_v2, timeInForce='gtc', extendedHours=False)
+        symbol_var.set("")
+        quantity_var.set("")
+        price_var.set("")
+
+    symbol_gui = tk.Label(window3, text='Symbol', font=('calibre', 10, 'bold'))
+
+    symbol_display = tk.Entry(window3, textvariable=symbol_var, font=('calibre', 10, 'normal'))
+
+    quant_gui = tk.Label(window3, text='Quantity', font=('calibre', 10, 'bold'))
+
+    quant_display = tk.Entry(window3, textvariable=quantity_var, font=('calibre', 10, 'normal'))
+
+    price_gui = tk.Label(window3, text='Price', font=('calibre', 10, 'bold'))
+
+    price_display = tk.Entry(window3, textvariable=price_var, font=('calibre', 10, 'normal'))
+
+    submit_button = tk.Button(window3, text='Submit', command=submit3)
 
     # Displays the actual parts on the GUI
     symbol_gui.grid(row=0, column=0)
@@ -178,9 +227,11 @@ btn1 = tk.Button(root, text="Get Your Transactions", command=click_transactions)
 btn2 = tk.Button(root, text="Get the number of orders you have ever placed", command=click_orders)
 # btn4 = tk.Button(root, text="Logout", command=click_logout())
 btn5 = tk.Button(root, text="Limit Order Buy (Crypto)", command=limit_order_crypto)
+btn6 = tk.Button(root, text="Limit Order Buy (Stock)", command=limit_order_stock)
 btn0.pack()
 btn1.pack()
 btn2.pack()
 # btn4.pack()
 btn5.pack()
+btn6.pack()
 root.mainloop()
