@@ -4,8 +4,8 @@ import tkinter as tk
 # This API was used: https://github.com/jmfernandes/robin_stocks
 
 # Debug; ignore these two lines
-# rs.login(username='', password='', expiresIn=86400, by_sms=True, store_session=True)
-# rs.logout()
+rs.login(username='', password='', expiresIn=86400, by_sms=True, store_session=True)
+#rs.logout()
 
 # This function creates a log in box where you can enter your credentials to use the actual program
 def click_login():
@@ -42,6 +42,53 @@ def click_login():
     passw_gui.grid(row=1, column=0)
     passw_display.grid(row=1, column=1)
     submit_button.grid(row=2, column=1)
+
+
+def limit_order_crypto():
+    window2 = tk.Toplevel(root)
+
+    window2.geometry("500x350")
+
+    symbol_var = tk.StringVar()
+    quantity_var = tk.StringVar()
+    price_var = tk.StringVar()
+
+    def submit2():
+        quantity = quantity_var.get()
+        price = price_var.get()
+        symbol = symbol_var.get()
+        price_v2 = float(price)
+        quantity_v2 = float(quantity)
+        print("symbol: " + symbol)
+        print("quantity: " + quantity)
+        print("price: " + price)
+        rs.orders.order_buy_crypto_limit(symbol, quantity_v2, price_v2, timeInForce='gtc')
+        symbol_var.set("")
+        quantity_var.set("")
+        price_var.set("")
+
+    symbol_gui = tk.Label(window2, text='Symbol', font=('calibre', 10, 'bold'))
+
+    symbol_display = tk.Entry(window2, textvariable=symbol_var, font=('calibre', 10, 'normal'))
+
+    quant_gui = tk.Label(window2, text='Quantity', font=('calibre', 10, 'bold'))
+
+    quant_display = tk.Entry(window2, textvariable=quantity_var, font=('calibre', 10, 'normal'))
+
+    price_gui = tk.Label(window2, text='Price', font=('calibre', 10, 'bold'))
+
+    price_display = tk.Entry(window2, textvariable=price_var, font=('calibre', 10, 'normal'))
+
+    submit_button = tk.Button(window2, text='Submit', command=submit2)
+
+    # Displays the actual parts on the GUI
+    symbol_gui.grid(row=0, column=0)
+    symbol_display.grid(row=0, column=1)
+    quant_gui.grid(row=1, column=0)
+    quant_display.grid(row=1, column=1)
+    price_gui.grid(row=2, column=0)
+    price_display.grid(row=2, column=1)
+    submit_button.grid(row=3, column=1)
 
 
 # This function gets the number of deposits and withdrawals you have ever done
@@ -130,8 +177,10 @@ btn0 = tk.Button(root, text="Login", command=click_login)
 btn1 = tk.Button(root, text="Get Your Transactions", command=click_transactions)
 btn2 = tk.Button(root, text="Get the number of orders you have ever placed", command=click_orders)
 # btn4 = tk.Button(root, text="Logout", command=click_logout())
+btn5 = tk.Button(root, text="Limit Order Buy (Crypto)", command=limit_order_crypto)
 btn0.pack()
 btn1.pack()
 btn2.pack()
 # btn4.pack()
+btn5.pack()
 root.mainloop()
